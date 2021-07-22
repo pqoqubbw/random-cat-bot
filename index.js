@@ -12,38 +12,48 @@ bot.start();
 
 const API1 = 'https://cataas.com/cat/cute';
 const API2 = 'https://cataas.com/cat/gif';
+const API3_SECRET = 'https://cataas.com/cat/cute/says/send%20nudes';
+const API4_SECRET = 'https://cataas.com/cat/cute/says/send%20dick%20pick';
 
-bot.on('text', function (msg) {
+const sendSecretIMG = (apiUrl) => {
+    const number = Math.random() < 0.1;
+    const phraseAPIURL = Math.random() < 0.5 ? API3_SECRET : API4_SECRET;
+
+    if (number) {
+        return phraseAPIURL;
+    }
+
+    return apiUrl;
+}
+
+bot.on('text', (msg) => {
     console.log(msg)
     console.log(`[text] ${msg.chat.id} ${msg.text}`);
 });
 
 
-bot.on(['/cat', '/catgif'], function (msg) {
+bot.on(['/cat', '/catgif'], (msg) => {
 
     let promise;
     let id = msg.chat.id;
     let cmd = msg.text.split(' ')[0];
 
-    // Photo or gif?
     if (cmd == '/cat') {
-        promise = bot.sendPhoto(id, API1, {
+        promise = bot.sendPhoto(id, sendSecretIMG(API1), {
             fileName: 'cataas.jpg',
             serverDownload: true
         });
     } else {
-        promise = bot.sendDocument(id, API2, {
+        promise = bot.sendDocument(id, sendSecretIMG(API2), {
             fileName: 'cataas.gif',
             serverDownload: true
         });
     }
 
-    // Send "uploading photo" action
     bot.sendAction(id, 'upload_photo');
 
     return promise.catch(error => {
         console.log('[error]', error);
-        // Send an error
         bot.sendMessage(id, `😿 Вышла ошибочка, попробуйте позже.\n${error.description}`);
     });
 
