@@ -1,5 +1,13 @@
+const app = require("express")();
+const server = require("http").createServer(app);
+const cors = require("cors");
+
 const TelegaBot = require('telega-bot');
 const bot = new TelegaBot('1941890783:AAHfHb3HJ3l-REyun7CbCj3m6fnbc_-fioA');
+
+app.use(cors());
+const PORT = process.env.PORT || 5000;
+
 bot.start();
 
 const API1 = 'https://cataas.com/cat/cute';
@@ -7,7 +15,7 @@ const API2 = 'https://cataas.com/cat/gif';
 
 bot.on('text', function (msg) {
     console.log(msg)
-    console.log(`[text] ${ msg.chat.id } ${ msg.text }`);
+    console.log(`[text] ${msg.chat.id} ${msg.text}`);
 });
 
 
@@ -29,7 +37,7 @@ bot.on(['/cat', '/catgif'], function (msg) {
             serverDownload: true
         });
     }
-	
+
     // Send "uploading photo" action
     bot.sendAction(id, 'upload_photo');
 
@@ -44,3 +52,5 @@ bot.on(['/cat', '/catgif'], function (msg) {
 bot.on('/start', (msg) => {
     return msg.reply.text('Привет, напиши /cat или /catgif чтобы получить милости', { asReply: true });
 });
+
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
