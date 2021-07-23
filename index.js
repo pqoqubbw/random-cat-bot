@@ -16,7 +16,7 @@ const API3_SECRET = process.env.API3_SECRET;
 const API4_SECRET = process.env.API4_SECRET;
 
 const sendSecretIMG = (apiUrl) => {
-  const number = Math.random() < 0.1;
+  const number = Math.random() < 0.03;
   const phraseAPIURL = Math.random() < 0.5 ? API3_SECRET : API4_SECRET;
 
   if (number) {
